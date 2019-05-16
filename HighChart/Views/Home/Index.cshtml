@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+    .underline {
+        color: red; 
+        text-decoration: underline;
+        -webkit-text-decoration-color: red; /* Safari */  
+        text-decoration-color: red !important;
+    }
+</style>
+<script src="~/Scripts/chart/exporting.js"></script>
+<script src="~/Scripts/chart/highcharts.js"></script>
+
+
+<div class="jumbotron">
+    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.getJSON("/Home/GetData", function (data) {
+            Highcharts.chart('container', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: '<strong class="underline">Employee Ratio</strong>'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Employee',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Male',
+                        y: data.Male
+                    }, {
+                        name: 'Female',
+                        y: data.Female
+                    }, {
+                        name: 'Other',
+                        y: data.Other
+                    }, {
+                        name: 'Other1',
+                        y: data.Other1
+                    }, {
+                        name: 'Other2',
+                        y: data.Other2
+                    }]
+                }]
+            });
+        });
+    });
+</script>
